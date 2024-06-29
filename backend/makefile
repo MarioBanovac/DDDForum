@@ -5,3 +5,7 @@ run: ## Run container
 
 stop: ## Stop container
 	$(DOCKER_COMPOSE) stop
+
+clean: ## reinstall dependencies
+	rm -rf ./node_modules
+	yarn install
