@@ -14,7 +14,9 @@ export const createUser = async(userInput: IUserInput) => {
   try {
     const user = await prisma.user.create({
       data : userInput}) 
-      return user 
+      const userCopy = JSON.parse(JSON.stringify(user))
+      delete userCopy.password
+      return userCopy
   } catch(e) {
     if(e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
       if(e.meta?.target) {
