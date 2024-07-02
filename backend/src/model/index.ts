@@ -70,3 +70,11 @@ export const findUser = async(userId: number, newUserData: IUserInput) => {
   delete newUserCopy.password
   return newUserCopy
 }
+
+export const findUserByEmail = async (email: string) => (
+  await prisma.user.findUnique({
+    where: {
+      email
+    }
+  })
+)

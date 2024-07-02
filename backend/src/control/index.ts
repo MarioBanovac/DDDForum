@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
-import { createUser, findUser } from "../model";
+import { createUser, findUser, findUserByEmail } from "../model";
 import { Errors } from "../utils/errors";
+import { request } from "http";
 
 const app = express();
 app.use(express.json());
@@ -14,9 +15,9 @@ const getErrorStatusCode = (error: unknown): number => {
   ) {
     return 409;
   }
-  
-  if( error === Errors.UserNotFound) {
-    return 404
+
+  if (error === Errors.UserNotFound) {
+    return 404;
   }
 
   if (error === Errors.ValidationError) {
@@ -56,9 +57,17 @@ app.post("/users/new", async (req: Request, res: Response) => {
 // Edit a user
 app.post("/users/edit/:userId", async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params
+    const { userId } = req.params;
     const { email, username, firstName, lastName } = req.body;
-    if (!email || !username || !firstName || !lastName || !req.params || !userId || isNaN(parseInt(userId))) {
+    if (
+      !email ||
+      !username ||
+      !firstName ||
+      !lastName ||
+      !req.params ||
+      !userId ||
+      isNaN(parseInt(userId))
+    ) {
       throw Errors.ValidationError;
     }
     const targetUser = await findUser(parseInt(userId), {
@@ -66,12 +75,12 @@ app.post("/users/edit/:userId", async (req: Request, res: Response) => {
       username,
       firstName,
       lastName,
-    })
+    });
     res.status(200).json({
-      error:undefined,
+      error: undefined,
       data: targetUser,
-      success:true
-    })
+      success: true,
+    });
   } catch (error) {
     res.status(getErrorStatusCode(error)).json({
       error,
@@ -82,21 +91,29 @@ app.post("/users/edit/:userId", async (req: Request, res: Response) => {
 });
 
 // Find a user by email
-// app.get("/users", async (req: Request, res: Response) => {
-//   const { email } = req.body;
-//   if (!email) {
-//     return res.status(400).json({
-//       message: "Email is required!",
-//     });
-//   }
-//   if (Object.keys(req.body).length > 1) {
-//     return res.status(400).json({
-//       message: "Request contains extra params!",
-//     });
-//   }
-//   const foundUser = await findUser(email);
-//   res.status(200).json(foundUser);
-// });
+app.get("/users", async (req: Request, res: Response) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      throw Errors.ValidationError;
+    }
+    const targetUser = await findUserByEmail(email.toString())
+    if(!targetUser) {
+      throw Errors.UserNotFound
+    }
+    res.status(200).json({
+      error: undefined,
+      data: targetUser,
+      success: true
+    })
+  } catch (error) {
+    res.status(getErrorStatusCode(error)).json({
+      error,
+      data: undefined,
+      success: false
+    })
+  }
+});
 
 const PORT = 3000;
 
