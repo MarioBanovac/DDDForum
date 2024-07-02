@@ -6,3 +6,4 @@ export const Errors = {
   ClientError: 'ClientError',
   UserNotFound: 'UserNotFound'
 }
+
