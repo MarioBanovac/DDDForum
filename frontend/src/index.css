@@ -30,6 +30,10 @@
   display: flex;
 }
 
+.column {
+  flex-direction: column;
+}
+
 .block {
   display: block;
 }

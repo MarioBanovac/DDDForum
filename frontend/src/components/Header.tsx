@@ -22,7 +22,7 @@ export function Header() {
         <PageSubtitle />
         <ActionLink text={"submit"} link={"#"} variant={'secondary'} />
       </div>
-        <ActionLink text={"Join"} link={"/join"} variant={'primary'} />
+        <ActionLink text={"Join"} link={"join"} variant={'primary'} />
     </div>
   );
 }
