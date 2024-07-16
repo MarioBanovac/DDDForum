@@ -20,9 +20,9 @@ export function Header() {
       <div>
         <PageTitle />
         <PageSubtitle />
-        <ActionLink text={"submit"} link={"#"} />
+        <ActionLink text={"submit"} link={"#"} variant={'secondary'} />
       </div>
-      <ActionButton text={"Join"} />
+        <ActionLink text={"Join"} link={"/join"} variant={'primary'} />
     </div>
   );
 }

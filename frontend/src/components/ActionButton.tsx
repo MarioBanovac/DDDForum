@@ -12,7 +12,7 @@ const styles = {
 
 export function ActionButton({ text }: Props) {
   return (
-    <button style={styles} type="submit">
+    <button className="button" style={styles} type="submit">
       {text}
     </button>
   );

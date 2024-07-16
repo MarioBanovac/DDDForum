@@ -50,6 +50,15 @@
   font-weight: var(--fw-semiBold);
 }
 
+.button {
+  cursor: pointer;
+  background-color: var(--dark);
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: inherit;
+}
+
 body {
   font-family: var(--ff-main);
   font-size: var(--fs-normal);
@@ -65,6 +74,10 @@ body {
   padding-right: 20px;
 }
 
+a {
+  text-decoration: none;
+}
+
 h1 {
   font-size: var(--fs-title);
 }
@@ -73,14 +86,6 @@ h2 {
   font-size: var(--fs-subtitle);
 }
 
-button {
-  cursor: pointer;
-  background-color: var(--dark);
-  color: #fff;
-  outline: none;
-  border: none;
-  font-size: inherit;
-}
 
 
 
