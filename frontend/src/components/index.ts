@@ -5,3 +5,4 @@ export { Logo } from "./Logo";
 export { PageSubtitle } from "./PageSubtitle";
 export { PageTitle } from "./PageTitle";
 export { PostsSwitch } from "./PostsSwitch";
+export { Container } from "./Container";
