@@ -1,5 +1,9 @@
 const styles = { marginBottom: 8 };
 
-export function PageSubtitle() {
-  return <h2 style={styles}>Where awesome Domain-Driven Designers are made</h2>;
+interface IProps {
+  text: string
+}
+
+export function PageSubtitle({text}: IProps) {
+  return <h2 style={styles}>{text}</h2>;
 }
