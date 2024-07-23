@@ -1,4 +1,4 @@
-import { ActionLink } from "components";
+import { ActionLink } from "UI";
 
 export function Error() {
   return (

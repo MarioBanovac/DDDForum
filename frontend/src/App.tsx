@@ -1,4 +1,4 @@
-import { Home, Register, Error } from "Pages";
+import { Home, Register, Error } from "Controller";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([

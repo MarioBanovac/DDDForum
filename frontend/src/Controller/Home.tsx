@@ -1,4 +1,4 @@
-import { Header, PostsSwitch, Container, Post } from "components";
+import { Header, PostsSwitch, Container, Post } from "UI";
 
 export function Home() {
   return (

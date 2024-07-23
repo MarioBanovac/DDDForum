@@ -4,7 +4,7 @@ import {
   Container,
   Header,
   PageSubtitle,
-} from "components";
+} from "UI";
 
 export function Register() {
   const inputStyles = {
