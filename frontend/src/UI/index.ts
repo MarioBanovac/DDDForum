@@ -7,3 +7,4 @@ export { PageTitle } from "./PageTitle";
 export { PostsSwitch } from "./PostsSwitch";
 export { Container } from "./Container";
 export { Post } from './Post'
+export { Form } from './Form'

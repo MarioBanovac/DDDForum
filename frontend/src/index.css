@@ -92,3 +92,7 @@ h1 {
 h2 {
   font-size: var(--fs-subtitle);
 }
+
+input:focus:invalid {
+  background-color: #f8f8f8;
+}

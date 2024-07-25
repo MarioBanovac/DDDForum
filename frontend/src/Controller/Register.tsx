@@ -1,69 +1,51 @@
-import {
-  ActionButton,
-  ActionLink,
-  Container,
-  Header,
-  PageSubtitle,
-} from "UI";
+import { Container, Header, PageSubtitle, Form } from "UI";
+import { notify } from "./notify";
 
 export function Register() {
-  const inputStyles = {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 8,
-    paddingRight: 8,
-    borderWidth: 3,
-    borderColor: "#000",
-    fontSize: 16,
+  const handleRegistration = ({
+    email,
+    emailRef,
+    username,
+    usernameRef,
+    password,
+    passwordRef,
+  }: {
+    email: string;
+    emailRef: React.RefObject<HTMLInputElement>;
+    username: string;
+    usernameRef: React.RefObject<HTMLInputElement>;
+    password: string;
+    passwordRef: React.RefObject<HTMLInputElement>;
+  }) => {
+    const isEmailValid = emailRef.current?.checkValidity();
+    if (!isEmailValid) {
+      return notify({
+        toastType: "error",
+        toastMessage: emailRef?.current?.validationMessage,
+      });
+    }
+    const isUsernameValid = usernameRef.current?.checkValidity();
+    if (!isUsernameValid) {
+      return notify({
+        toastType: "error",
+        toastMessage: "Please provide a username",
+      });
+    }
+
+    const isPasswordValid = passwordRef.current?.checkValidity();
+    if (!isPasswordValid) {
+      return notify({
+        toastType: "error",
+        toastMessage: "Your password should be at least 6 chars",
+      });
+    }
   };
 
   return (
     <Container>
       <Header />
       <PageSubtitle text="Create account" />
-      <form
-        style={{
-          width: "100%",
-          maxWidth: 480,
-          gap: 12,
-          marginTop: 30,
-          marginBottom: 30,
-        }}
-        className="flex column"
-        onSubmit={() => {}}
-      >
-        <input
-          style={inputStyles}
-          placeholder="email"
-          type="email"
-          id="email"
-          name="email"
-          required
-        />
-        <input
-          style={inputStyles}
-          placeholder="username"
-          type="text"
-          id="username"
-          name="username"
-          required
-        />
-        <input
-          style={inputStyles}
-          placeholder="password"
-          type="password"
-          id="password"
-          name="password"
-          required
-        />
-      </form>
-      <div className="flex" style={{ gap: 50 }}>
-        <div>
-          <p>already have an account?</p>
-          <ActionLink text="Login" link="/login" variant="secondary" />
-        </div>
-        <ActionButton text="Submit" />
-      </div>
+      <Form handleRegistration={handleRegistration} />
     </Container>
   );
 }

@@ -1,21 +1,25 @@
 import { Home, Register, Error } from "Controller";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
-    errorElement: <Error />
+    errorElement: <Error />,
   },
   {
-    path: '/join',
-    element: <Register />
-  }
+    path: "/join",
+    element: <Register />,
+  },
 ]);
 
 function App() {
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
   );
 }
 
