@@ -1,0 +1,98 @@
+/* CSS RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* CUSTOM VARIABLES */
+:root {
+  /* COLORS */
+  --light: #f9f9f9;
+  --dark: #000;
+  --purple: #551a8b;
+  --inactive: #aeaeae;
+  --placeholder: #757575;
+  /* ---------------------- */
+  /* FONTS */
+  --ff-main: "Roboto Mono", monospace;
+  --fs-title: 32px;
+  --fs-subtitle: 20px;
+  --fs-normal: 16px;
+
+  --fw-semiBold: 600;
+}
+
+.flex {
+  display: flex;
+}
+
+.column {
+  flex-direction: column;
+}
+
+.block {
+  display: block;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.fw-semiBold {
+  font-weight: var(--fw-semiBold);
+}
+
+.button {
+  cursor: pointer;
+  background-color: var(--dark);
+  color: #fff;
+  outline: none;
+  border: none;
+  font-size: inherit;
+}
+
+body {
+  font-family: var(--ff-main);
+  font-size: var(--fs-normal);
+}
+
+.container {
+  margin: 20px;
+  height: 100vh;
+  background-color: var(--light);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: #551a8b;
+}
+
+h1 {
+  font-size: var(--fs-title);
+}
+
+h2 {
+  font-size: var(--fs-subtitle);
+}
+
+input:focus:invalid {
+  background-color: #f8f8f8;
+}

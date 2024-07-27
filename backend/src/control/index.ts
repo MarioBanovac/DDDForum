@@ -11,6 +11,8 @@ import {
 import { Errors } from "../utils/errors";
 import { connectDB } from "../db";
 
+require('dotenv').config();
+
 (async () => {
   await connectDB();
 })().catch((e) => {
