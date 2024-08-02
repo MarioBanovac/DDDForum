@@ -3,6 +3,8 @@ import { PageTitle } from "./PageTitle";
 import { PageSubtitle } from "./PageSubtitle";
 import { ActionLink } from "./ActionLink";
 import { Logo } from "./Logo";
+import { useContextThrowUndefined, UserContext } from "context";
+import { IUserContext } from "context/UserContext";
 
 const containerStyles = {
   gap: 40,
@@ -11,6 +13,7 @@ const containerStyles = {
 
 export function Header() {
   const { pathname } = useLocation();
+  const { user } = useContextThrowUndefined<IUserContext>(UserContext);
 
   return (
     <div className="flex justify-center align-center" style={containerStyles}>
@@ -21,7 +24,14 @@ export function Header() {
         <ActionLink text={"submit"} link={"#"} variant={"secondary"} />
       </div>
       {pathname === "/" ? (
-        <ActionLink text={"Join"} link={"join"} variant={"primary"} />
+        user?.id ? (
+          <div className="flex column">
+            {user?.username}
+            <ActionLink text={"logout"} link={"#"} variant={"secondary"} />
+          </div>
+        ) : (
+          <ActionLink text={"Join"} link={"join"} variant={"primary"} />
+        )
       ) : null}
     </div>
   );

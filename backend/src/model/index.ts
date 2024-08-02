@@ -3,8 +3,7 @@ import { prisma } from "../db";
 interface IUserInput {
   email: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  password: string
 }
 
 export const createUser = async (userInput: IUserInput) => {
