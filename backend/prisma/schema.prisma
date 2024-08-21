@@ -12,5 +12,56 @@ model User {
   email String @unique
   username String @unique
   password String
+  member Member?
+}
+
+model Member {
+  id Int @id @default(autoincrement())
+  
+  userId Int @unique
+  user User @relation(fields: [userId], references: [id])
+  posts Post[]
+  votes Vote[]
+  comments Comment[]
+}
+
+model Post {
+  id Int @id @default(autoincrement())
+  
+  memberId Int
+  memberPostedBy Member @relation(fields: [memberId], references: [id])
+  postType String
+  title String
+  content String
+  comments Comment[]
+  dateCreated DateTime @default(now())
+  votes Vote[]
+}
+
+model Comment {
+  id Int @id @default(autoincrement())
+  
+  postId Int
+  post Post @relation(fields: [postId], references: [id])
+  text String
+  
+  memberId Int
+  memberPostedBy Member @relation(fields: [memberId], references: [id])
+  
+  parentCommentId Int?
+  parentComment Comment? @relation("Replies", fields: [parentCommentId], references: [id])
+  replyComments Comment[] @relation("Replies")
+}
+
+model Vote {
+  id Int @id @default(autoincrement())
+  
+  memberId Int
+  memberPostedBy Member @relation(fields: [memberId], references: [id])
+  
+  postId Int
+  postBelongsTo Post @relation(fields: [postId], references: [id])
+  
+  voteType String // 'Upvote' or 'Downvote'
 }
 
