@@ -1,12 +1,17 @@
 import { prisma } from "../db";
 
-interface IUserInput {
+interface INewUser {
   email: string;
   username: string;
-  password: string
+  password: string;
 }
 
-export const createUser = async (userInput: IUserInput) => {
+interface IUpdateUser {
+  email: string;
+  username: string;
+}
+
+export const createUser = async (userInput: INewUser) => {
   try {
     return await prisma.user.create({
       data: userInput,
@@ -16,7 +21,7 @@ export const createUser = async (userInput: IUserInput) => {
   }
 };
 
-export const updateUser = async (userInput: IUserInput, id: number) =>
+export const updateUser = async (userInput: IUpdateUser, id: number) =>
   await prisma.user.update({
     data: userInput,
     where: {
@@ -43,4 +48,24 @@ export const findUserByUsername = async (username: string) =>
     where: {
       username,
     },
+  });
+
+export const findPosts = async () =>
+  await prisma.post.findMany({
+    include: {
+      votes: true,
+      memberPostedBy: {
+        include: {
+          user: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      },
+      comments: true,
+    },
+    orderBy: {
+      dateCreated: 'desc'
+    }
   });

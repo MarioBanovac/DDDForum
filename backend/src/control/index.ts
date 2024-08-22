@@ -7,6 +7,7 @@ import {
   findUserByEmail,
   findUserByUsername,
   updateUser,
+  findPosts,
 } from "../model";
 import { Errors } from "../utils/errors";
 import { connectDB } from "../db";
@@ -62,7 +63,7 @@ app.post(
         }
 
         const existingUserByUsername = await findUserByUsername(username);
-        
+
         if (existingUserByUsername) {
           throw Errors.UsernameAlreadyTaken;
         }
@@ -96,90 +97,109 @@ app.post(
 );
 
 // Edit a user
-// app.post(
-//   "/users/edit/:userId",
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const { userId } = req.params;
-//       const { email, username, firstName, lastName } = req.body;
-//       const payload = {
-//         email,
-//         username,
-//         firstName,
-//         lastName,
-//       };
-//       if (
-//         !email ||
-//         !username ||
-//         !firstName ||
-//         !lastName ||
-//         !req.params ||
-//         !userId ||
-//         isNaN(parseInt(userId))
-//       ) {
-//         throw Errors.ValidationError;
-//       }
-//       const targetUser = await findUserById(parseInt(userId));
-//       if (!targetUser) {
-//         throw Errors.UserNotFound;
-//       }
+app.post(
+  "/users/edit/:userId",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { userId } = req.params;
+      const { email, username } = req.body;
+      const payload = {
+        email,
+        username,
+      };
+      if (
+        !email ||
+        !username ||
+        !req.params ||
+        !userId ||
+        isNaN(parseInt(userId))
+      ) {
+        throw Errors.ValidationError;
+      }
+      const targetUser = await findUserById(parseInt(userId));
+      if (!targetUser) {
+        throw Errors.UserNotFound;
+      }
 
-//       const updatedUser = await updateUser(payload, parseInt(userId));
+      const updatedUser = await updateUser(payload, parseInt(userId));
 
-//       res.status(200).json({
-//         error: undefined,
-//         data: createUserResponse(updatedUser),
-//         success: true,
-//       });
-//     } catch (error) {
-//       if (error === Errors.ValidationError || error === Errors.UserNotFound) {
-//         res.status(getErrorStatusCode(error)).json({
-//           error,
-//           data: undefined,
-//           success: false,
-//         });
-//       } else {
-//         next(error);
-//       }
-//     }
-//   }
-// );
+      res.status(200).json({
+        error: undefined,
+        data: createUserResponse(updatedUser),
+        success: true,
+      });
+    } catch (error) {
+      if (error === Errors.ValidationError || error === Errors.UserNotFound) {
+        res.status(getErrorStatusCode(error)).json({
+          error,
+          data: undefined,
+          success: false,
+        });
+      } else {
+        next(error);
+      }
+    }
+  }
+);
 
 // Find a user by email
-// app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const { email } = req.query;
-//     if (!email) {
-//       throw Errors.ValidationError;
-//     }
-//     const targetUser = await findUserByEmail(email.toString());
-//     if (targetUser) {
-//       res.status(200).json({
-//         error: undefined,
-//         data: createUserResponse(targetUser),
-//         success: true,
-//       });
-//     }
+app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { email } = req.query;
+    if (!email) {
+      throw Errors.ValidationError;
+    }
+    const targetUser = await findUserByEmail(email.toString());
+    if (targetUser) {
+      res.status(200).json({
+        error: undefined,
+        data: createUserResponse(targetUser),
+        success: true,
+      });
+    }
 
-//     if (!targetUser) {
-//       throw Errors.UserNotFound;
-//     }
-//   } catch (error: any) {
-//     if (
-//       error === Errors.ValidationError ||
-//       error === Errors.UserNotFound ||
-//       error?.name === Errors.UserNotFound
-//     ) {
-//       res.status(getErrorStatusCode(error || error?.name)).json({
-//         error: error || error?.name,
-//         data: undefined,
-//         success: false,
-//       });
-//     } else {
-//       next(error);
-//     }
-//   }
-// });
+    if (!targetUser) {
+      throw Errors.UserNotFound;
+    }
+  } catch (error: any) {
+    if (
+      error === Errors.ValidationError ||
+      error === Errors.UserNotFound ||
+      error?.name === Errors.UserNotFound
+    ) {
+      res.status(getErrorStatusCode(error || error?.name)).json({
+        error: error || error?.name,
+        data: undefined,
+        success: false,
+      });
+    } else {
+      next(error);
+    }
+  }
+});
+
+app.get("/posts", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { sort } = req.query;
+
+    if (sort !== "recent") {
+      return res
+        .status(400)
+        .json({ error: Errors.ClientError, data: undefined, success: false });
+    }
+
+    const posts = await findPosts();
+    return res.json({
+      error: undefined,
+      data: { posts: [posts] },
+      success: true,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: Errors.ServerError, data: undefined, success: false });
+  }
+});
 
 // Global error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
