@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Header, PostsSwitch, Container, Posts } from "UI";
 import { apiClient } from "Api";
+import { IPost } from "interfaces/Post";
 
 export function Home() {
-  const [posts, setPosts] = useState<any>([])
+  const [posts, setPosts] = useState<IPost[]>([])
   
   async function loadPosts() {
     const posts = await apiClient.getPopularPosts()

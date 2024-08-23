@@ -1,56 +1,8 @@
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { ApiError } from "./apiError";
-
-interface IUserData {
-  email: string;
-  username: string;
-  password: string;
-}
-
-interface ICreateSuccessDto {
-  data: {
-    email: string;
-    username: string;
-    id: number;
-  };
-  success?: boolean;
-}
-
-
-interface ICommentDto {
-  id: number,
-  memberId: number,
-  parentCommentId: null | number
-  postId: number
-  text: string
-}
-
-interface IMemberDto {
-  id: number,
-  userId: number,
-  user: {
-    username: string
-  }
-}
-
-interface IVoteDto {
-  id: number,
-  memberId: number,
-  postId: number,
-  voteType: 'Upvote' | 'DownVote'
-}
-
-interface IPostDto {
-  comments: Array<ICommentDto>,
-  content: string,
-  dateCreated: string,
-  id: number,
-  memberId: number,
-  memberPostedBy: IMemberDto,
-  postType: string,
-  title: string
-  votes: Array<IVoteDto>
-}
+import { IPost } from "interfaces/Post";
+import { IUserPayload } from "interfaces/UserPayload";
+import { IUserCreatedDto } from "interfaces/UserCreatedDto";
 
 class ApiClient {
   apiInstance: AxiosInstance;
@@ -74,7 +26,7 @@ class ApiClient {
     }
   }
 
-  async createUser(userData: IUserData): Promise<ICreateSuccessDto> {
+  async createUser(userData: IUserPayload): Promise<IUserCreatedDto> {
     try {
       const response = await this.apiInstance.post(
         "/users/new",
@@ -94,11 +46,11 @@ class ApiClient {
       }
     }
   }
-  
-  async getPopularPosts(): Promise<IPostDto> {
+
+  async getPopularPosts(): Promise<IPost[]> {
     try {
-      const response = await this.apiInstance.get('/posts')
-      return response.data.data.posts[0]
+      const response = await this.apiInstance.get("/posts");
+      return response.data.data.posts[0];
     } catch (error) {
       if (error instanceof AxiosError) {
         throw new ApiError(error);

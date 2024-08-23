@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { ActionButton } from "./ActionButton";
 import { ActionLink } from "./ActionLink";
 
-interface Props {
+interface IProps {
   handleRegistration: (formData: {
     email: string;
     emailRef: React.RefObject<HTMLInputElement>;
@@ -13,7 +13,7 @@ interface Props {
   }) => void;
 }
 
-export function Form({ handleRegistration }: Props) {
+export function Form({ handleRegistration }: IProps) {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");

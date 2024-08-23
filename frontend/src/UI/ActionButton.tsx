@@ -1,4 +1,4 @@
-interface Props {
+interface IProps {
   text: string;
 }
 
@@ -10,7 +10,7 @@ const styles = {
   letterSpacing: 0.8,
 };
 
-export function ActionButton({ text }: Props) {
+export function ActionButton({ text }: IProps) {
   return (
     <button className="button" style={styles} type="submit">
       {text}

@@ -1,14 +1,15 @@
 import dayjs from "dayjs";
+import { IPost } from "interfaces/Post";
+import { IVote } from "interfaces/Vote";
 
 interface IProps {
-  posts: Array<any>;
+  posts: Array<IPost>;
 }
 
 export function Posts({ posts }: IProps) {
-  const getVotesNumber = (post): number => {
-    return post.reduce((acc: number, currentPost) => {
-      if (currentPost.voteType === "Upvote") acc += 1;
-      if (currentPost.voteType === "Downvote") acc -= 1;
+  const getVotesNumber = (votes: IVote[]): number => {
+    return votes.reduce((acc: number, currentVote: IVote) => {
+      currentVote.voteType === "Upvote" ? (acc += 1) : (acc -= 1);
       return acc;
     }, 0);
   };

@@ -1,4 +1,4 @@
-interface Props {
+interface IProps {
   link: string;
   text: string;
   variant: "primary" | "secondary";
@@ -16,7 +16,7 @@ const secondaryStyles = {
   textDecoration: "underline",
 };
 
-export function ActionLink({ link, text, variant }: Props) {
+export function ActionLink({ link, text, variant }: IProps) {
   return (
     <a
       className={variant === "primary" ? "button" : ""}
