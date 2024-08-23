@@ -6,5 +6,5 @@ export { PageSubtitle } from "./PageSubtitle";
 export { PageTitle } from "./PageTitle";
 export { PostsSwitch } from "./PostsSwitch";
 export { Container } from "./Container";
-export { Post } from './Post'
+export { Posts } from './Posts'
 export { Form } from './Form'

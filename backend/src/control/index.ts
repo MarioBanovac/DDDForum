@@ -180,14 +180,6 @@ app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
 
 app.get("/posts", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { sort } = req.query;
-
-    if (sort !== "recent") {
-      return res
-        .status(400)
-        .json({ error: Errors.ClientError, data: undefined, success: false });
-    }
-
     const posts = await findPosts();
     return res.json({
       error: undefined,
