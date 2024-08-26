@@ -7,9 +7,12 @@ import {
   findUserByEmail,
   findUserByUsername,
   updateUser,
+  findPosts,
 } from "../model";
 import { Errors } from "../utils/errors";
 import { connectDB } from "../db";
+
+require("dotenv").config();
 
 (async () => {
   await connectDB();
@@ -50,8 +53,8 @@ app.post(
   "/users/new",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { email, username, firstName, lastName } = req.body;
-      if (!email || !username || !firstName || !lastName) {
+      const { email, username, password } = req.body;
+      if (!email || !username || !password) {
         throw Errors.ValidationError;
       } else {
         const existingUserByEmail = await findUserByEmail(email);
@@ -67,8 +70,7 @@ app.post(
         const createdUser = await createUser({
           email,
           username,
-          firstName,
-          lastName,
+          password,
         });
         res.status(201).json({
           error: undefined,
@@ -100,18 +102,14 @@ app.post(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { userId } = req.params;
-      const { email, username, firstName, lastName } = req.body;
+      const { email, username } = req.body;
       const payload = {
         email,
         username,
-        firstName,
-        lastName,
       };
       if (
         !email ||
         !username ||
-        !firstName ||
-        !lastName ||
         !req.params ||
         !userId ||
         isNaN(parseInt(userId))
@@ -177,6 +175,21 @@ app.get("/users", async (req: Request, res: Response, next: NextFunction) => {
     } else {
       next(error);
     }
+  }
+});
+
+app.get("/posts", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const posts = await findPosts();
+    return res.json({
+      error: undefined,
+      data: { posts: [posts] },
+      success: true,
+    });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: Errors.ServerError, data: undefined, success: false });
   }
 });
 
